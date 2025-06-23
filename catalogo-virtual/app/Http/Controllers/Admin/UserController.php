@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -68,6 +69,10 @@ class UserController extends Controller
         }
 
         $user->syncRoles($request->roles);
+        
+        if (Auth::id() === $user->id && ! $user->hasRole('admin')) {
+            return redirect('/')->with('success', 'Tus permisos han cambiado, bienvenido.');
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente.');
     }

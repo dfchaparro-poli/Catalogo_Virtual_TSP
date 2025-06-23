@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // Traemos todos los productos
+        $products = Product::all();
+
+        // Renderizamos resources/views/dashboard.blade.php
+        return view('dashboard', compact('products'));
     }
 }

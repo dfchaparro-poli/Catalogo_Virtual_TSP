@@ -1,46 +1,84 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Editar Usuario
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container">
-    <h1>Editar usuario</h1>
+    <div class="py-6">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <span class="h5 mb-0">Datos de usuario</span>
+                </div>
+                <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger mb-4">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                    <form action="{{ route('admin.users.update', $user) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        {{-- Nombre --}}
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value="{{ old('name', $user->name) }}"
+                                class="form-control"
+                                required
+                            >
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value="{{ old('email', $user->email) }}"
+                                class="form-control"
+                                required
+                            >
+                        </div>
+
+                        {{-- Roles --}}
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select name="roles[]" class="form-select" required>
+                                @foreach ($roles as $role)
+                                    <option
+                                        value="{{ $role->name }}"
+                                        @if(
+                                            in_array($role->name,
+                                                     old('roles', $userRoles))
+                                        ) selected @endif
+                                    >
+                                        {{ ucfirst($role->name) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary me-2">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Actualizar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    @endif
-
-    <form action="{{ route('admin.users.update', $user) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-3">
-            <label>Nombre</label>
-            <input type="text" name="name" value="{{ $user->name }}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Email</label>
-            <input type="email" name="email" value="{{ $user->email }}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Rol</label>
-            <select name="role" class="form-control" required>
-                @foreach ($roles as $role)
-                    <option value="{{ $role->name }}" @if ($user->hasRole($role->name)) selected @endif>
-                        {{ $role->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <button class="btn btn-primary">Actualizar</button>
-        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
-@endsection
+    </div>
+</x-app-layout>

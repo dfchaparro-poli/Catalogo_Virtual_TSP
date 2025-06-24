@@ -74,12 +74,10 @@
           Total: $ {{ number_format($items->sum(fn($i)=>$i->price*$i->quantity),0,',','.') }}
         </div>
 
-        <form method="POST" action="{{ route('orders.store') }}">
-          @csrf
-          <button type="submit" class="btn btn-success">
-            Confirmar compra
-          </button>
-        </form>
+        <a href="{{ route('cart.checkout') }}" class="btn btn-success">
+          Confirmar compra
+        </a>
+
 
         @endif
 

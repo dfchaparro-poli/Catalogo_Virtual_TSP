@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,8 +58,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('cart/{item}', [CartController::class, 'remove'])
             ->name('cart.remove');
 
-        Route::post('cart/checkout', [OrderController::class, 'store'])
-            ->name('orders.store');
+        // Route::post('cart/checkout', [OrderController::class, 'store'])
+        //     ->name('orders.store');
+
+        Route::get('cart/checkout', [CheckoutController::class, 'show'])
+            ->name('cart.checkout');
+
+        Route::post('cart/checkout', [CheckoutController::class, 'process'])
+            ->name('cart.checkout.process');
 
         Route::get('orders', [OrderController::class, 'index'])
             ->name('orders.index');

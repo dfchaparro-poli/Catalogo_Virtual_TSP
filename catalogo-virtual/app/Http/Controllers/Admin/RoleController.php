@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -25,7 +26,13 @@ class RoleController extends Controller
             'name' => 'required|unique:roles,name',
         ]);
 
-        Role::create(['name' => $request->name]);
+        $role = Role::create([
+            'name'       => $request->name,
+            'guard_name' => 'web',
+        ]);
+
+        $permission = Permission::findOrFail(2);
+        $role->givePermissionTo($permission);
 
         return redirect()->route('admin.roles.index')->with('success', 'Rol creado correctamente.');
     }
@@ -46,8 +53,15 @@ class RoleController extends Controller
         return redirect()->route('admin.roles.index')->with('success', 'Rol actualizado correctamente.');
     }
 
+
     public function destroy(Role $role)
     {
+        if ($role->name === 'admin') {
+            return redirect()
+                ->route('admin.roles.index')
+                ->with('error', 'No puedes eliminar el rol admin.');
+        }
+
         $role->delete();
         return redirect()->route('admin.roles.index')->with('success', 'Rol eliminado correctamente.');
     }

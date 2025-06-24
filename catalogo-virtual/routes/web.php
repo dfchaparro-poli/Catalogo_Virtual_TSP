@@ -12,8 +12,8 @@ use App\Http\Controllers\Admin\RoleController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('admin.dashboard');
+})->name('dashboard');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

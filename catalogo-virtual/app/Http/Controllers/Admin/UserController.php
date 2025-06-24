@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::all();
+	$roles = Role::all(); // Obtener todos los roles desde la base de datos
         return view('admin.users.create', compact('roles'));
     }
 

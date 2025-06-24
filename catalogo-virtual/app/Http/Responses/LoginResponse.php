@@ -6,22 +6,18 @@ use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
 {
-    /**
-     * Handle the login response.
-     */
     public function toResponse($request)
     {
         $user = $request->user();
 
         if ($user->hasRole('admin')) {
-            return redirect()->intended('/admin');
+            return redirect()->route('admin.dashboard');
         }
 
         if ($user->hasRole('user')) {
-            return redirect()->intended('/user');
+            return redirect()->route('user.dashboard');
         }
 
-        // Por si acaso
-        return redirect()->intended('/dashboard');
+        return redirect()->route('dashboard');
     }
 }

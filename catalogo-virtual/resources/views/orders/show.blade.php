@@ -16,7 +16,21 @@
             <div class="bg-white shadow sm:rounded-lg p-6">
 
                 <p><strong>Fecha:</strong> {{ $order->created_at->format('Y-m-d H:i') }}</p>
-                <p><strong>Total:</strong> ${{ number_format($order->total,0,',','.') }}</p>
+                <p><strong>Total:</strong> ${{ number_format($order->total, 0, ',', '.') }}</p>
+
+                {{-- Medio de pago, si existe --}}
+                @if($order->payment_method)
+                    <p>
+                        <strong>Medio de Pago:</strong>
+                        @switch($order->payment_method)
+                            @case('credit_card')     Tarjeta de Crédito @break
+                            @case('debit_card')      Tarjeta de Débito  @break
+                            @case('cash')            Efectivo           @break
+                            @case('bank_transfer')   Transferencia Bancaria @break
+                            @default                 {{ $order->payment_method }}
+                        @endswitch
+                    </p>
+                @endif
 
                 <hr class="my-4">
 
@@ -34,8 +48,8 @@
                         <tr>
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>${{ number_format($item->price,0,',','.') }}</td>
-                            <td>${{ number_format($item->price * $item->quantity,0,',','.') }}</td>
+                            <td>${{ number_format($item->price, 0, ',', '.') }}</td>
+                            <td>${{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>

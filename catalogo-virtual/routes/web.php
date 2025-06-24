@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Ver carrito
         Route::get('/cart', [CartController::class, 'index'])
             ->name('cart.index');
+
+        Route::patch('cart/{item}', [CartController::class, 'update'])
+            ->name('cart.update');
+
+        Route::delete('cart/{item}', [CartController::class, 'remove'])
+            ->name('cart.remove');
+
+        Route::post('cart/checkout', [OrderController::class, 'store'])
+            ->name('orders.store');
+
+        Route::get('orders', [OrderController::class, 'index'])
+            ->name('orders.index');
+
+        Route::get('orders/{order}', [OrderController::class, 'show'])
+            ->name('orders.show');
     });
 
     // 4) rutas de admin (usuarios, roles, productos)

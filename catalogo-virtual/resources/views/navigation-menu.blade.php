@@ -29,6 +29,10 @@
                     <x-nav-link href="{{ route('cart.index') }}" :active="request()->routeIs('cart.*')" class="text-decoration-none">
                         {{ __('Carrito') }}
                     </x-nav-link>
+
+                    <x-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.*')" class="text-decoration-none">
+                        {{ __('Mis Compras') }}
+                    </x-nav-link>
                     @endrole
                 </div>
             </div>
@@ -131,7 +135,11 @@
 
                             @role('customer')
                             <x-dropdown-link href="{{ route('cart.index') }}" class="text-decoration-none">
-                                <i class="bi bi-cart3"></i> {{ __('Mi Carrito') }}
+                                <i class="bi bi-cart4"></i> {{ __('Mi Carrito') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('orders.index') }}" class="text-decoration-none">
+                                <i class="bi bi-bag-check-fill"></i> {{ __('Mis Compras') }}
                             </x-dropdown-link>
                             @endrole
 

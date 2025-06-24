@@ -39,4 +39,32 @@ class CartController extends Controller
 
         return back()->with('success', 'Producto agregado al carrito.');
     }
+
+    public function update(Request $request, CartItem $item)
+    {
+        // Asegurarnos de que el item pertenece al usuario
+        if ($item->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'quantity' => "required|integer|min:1|max:{$item->product->stock}"
+        ]);
+
+        $item->quantity = $request->quantity;
+        $item->save();
+
+        return back()->with('success', 'Cantidad actualizada.');
+    }
+
+    public function remove(CartItem $item)
+    {
+        if ($item->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $item->delete();
+
+        return back()->with('success', 'Producto eliminado del carrito.');
+    }
 }

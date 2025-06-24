@@ -8,21 +8,19 @@
 
     <div class="py-6">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            {{-- Card para el formulario --}}
             <div class="card shadow-sm">
                 <div class="card-header">
                     <span class="h5 mb-0">Nuevo Usuario</span>
                 </div>
                 <div class="card-body p-6">
-                    {{-- Mostrar validaciones --}}
                     @if ($errors->any())
-                        <div class="alert alert-danger mb-4">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger mb-4">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
                     <form action="{{ route('admin.users.store') }}" method="POST">
@@ -37,7 +35,7 @@
                                 value="{{ old('name') }}"
                                 class="form-control"
                                 required
-                            >
+                                autocomplete="off">
                         </div>
 
                         {{-- Email --}}
@@ -48,33 +46,58 @@
                                 name="email"
                                 value="{{ old('email') }}"
                                 class="form-control"
-                                required
-                            >
+                                required>
                         </div>
 
                         {{-- Contraseña --}}
                         <div class="mb-4">
                             <label class="form-label">Contraseña</label>
-                            <input
-                                type="password"
-                                name="password"
-                                class="form-control"
-                                required
-                            >
+                            <div class="input-group">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control"
+                                    required>
+                                <span class="input-group-text" style="cursor: pointer;"
+                                    onclick="togglePassword('password', this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Confirmar Contraseña --}}
+                        <div class="mb-4">
+                            <label class="form-label">Confirmar Contraseña</label>
+                            <div class="input-group">
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    id="password_confirmation"
+                                    class="form-control"
+                                    required>
+                                <span class="input-group-text" style="cursor: pointer;"
+                                    onclick="togglePassword('password_confirmation', this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
                         </div>
 
                         {{-- Rol --}}
                         <div class="mb-4">
                             <label class="form-label">Rol</label>
-                            <select name="role" class="form-select">
+                            <select
+                                name="roles[]" {{-- ← aquí va roles[] --}}
+                                class="form-select"
+                                required>
                                 <option value="" disabled selected>Seleccionar Rol</option>
                                 @foreach($roles as $role)
-                                    <option
-                                        value="{{ $role->name }}"
-                                        @selected(old('role') === $role->name)
+                                <option
+                                    value="{{ $role->name }}"
+                                    @selected( in_array($role->name, old('roles', [])) )
                                     >
-                                        {{ ucfirst($role->name) }}
-                                    </option>
+                                    {{ ucfirst($role->name) }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -90,7 +113,23 @@
                     </form>
                 </div>
             </div>
-            {{-- /Card --}}
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function togglePassword(fieldId, iconSpan) {
+        const input = document.getElementById(fieldId);
+        const icon = iconSpan.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+</script>

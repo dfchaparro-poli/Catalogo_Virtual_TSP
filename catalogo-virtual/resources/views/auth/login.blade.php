@@ -20,10 +20,20 @@
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 relative overflow-visible">
                 <x-label for="password" value="{{ __('Contraseña') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+
+                <div class="input-group">
+                    <x-input id="password" type="password" name="password" autocomplete="current-password"
+                        required class="form-control" />
+
+                    <span class="input-group-text" style="cursor: pointer;"
+                        onclick="togglePassword('password', this)">
+                        <i class="bi bi-eye"></i>
+                    </span>
+                </div>
             </div>
+
 
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
@@ -57,3 +67,18 @@
         </form>
     </x-authentication-card>
 </x-guest-layout>
+
+<script>
+    function togglePassword(fieldId, iconSpan) {
+        const input = document.getElementById(fieldId);
+        const icon = iconSpan.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    }
+</script>

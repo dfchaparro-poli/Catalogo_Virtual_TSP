@@ -4,6 +4,8 @@
 
 <head>
     <title>Eleven</title>
+    
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
     <!-- Bootstrap 5 CSS (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -77,10 +79,10 @@
                 {{-- Slides --}}
                 <div class="carousel-inner">
                     @foreach([
-                    ['name'=>'Nevecon Samsung','img'=>'images/Nevecon.png','price'=>'$7.500.000'],
-                    ['name'=>'Lavadora Samsung','img'=>'images/Lavadora Samsung.webp','price'=>'$3.200.000'],
-                    ['name'=>'Horno Microondas con Dorador','img'=>'images/Horno Microondas con Dorador.webp','price'=>'$450.000'],
-                    ['name'=>'Aspiradora Karcher','img'=>'images/Aspiradora Karcher.png','price'=>'$4.500.000'],
+                    ['name'=>'Nevecon Samsung','img'=>'images/Nevecon.png','price'=>'$7.499.000'],
+                    ['name'=>'Lavadora Samsung','img'=>'images/Lavadora Samsung.webp','price'=>'$3.099.900'],
+                    ['name'=>'Horno Microondas con Dorador','img'=>'images/Horno Microondas con Dorador.webp','price'=>'$499.000'],
+                    ['name'=>'Aspiradora Karcher','img'=>'images/Aspiradora Karcher.png','price'=>'$4.990.900'],
                     ] as $i => $product)
                     <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
                         <div class="d-flex justify-content-center">
